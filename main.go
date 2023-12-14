@@ -17,7 +17,7 @@ const (
 	delay  = 1
 	delayS = float64(delay) / 100.0
 
-	diff = 0.5
+	diff = 0.001
 	visc = 0.0001
 )
 
@@ -177,7 +177,7 @@ func main() {
 		vPrev       = mat.NewDense(n+2, n+2, nil)
 	)
 
-	density.Apply(func(i, j int, _ float64) float64 { return 0.3 }, density)
+	density.Apply(func(i, j int, _ float64) float64 { return 0.0 }, density)
 	u.Apply(func(i, j int, _ float64) float64 { return 0.5 }, density)
 	v.Apply(func(i, j int, _ float64) float64 { return 0.5 }, density)
 
@@ -185,8 +185,8 @@ func main() {
 	go Simulate(density, densityPrev, u, uPrev, v, vPrev, func(i int, d, u, v *mat.Dense) {
 		for x := 0; x < 64; x++ {
 			for y := 0; y < 64; y++ {
-				d.Set(x, y, 1.0)
-				d.Set(n+1-x, n+1-y, 0.0)
+				d.Set(16+x, 16+y, 1.0)
+				d.Set(n-15-x, n-15-y, 0.0)
 			}
 		}
 		for x := 0; x < n+2; x++ {
